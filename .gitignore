@@ -4,6 +4,7 @@ _gitignore/
 Vagrantfile
 .vagrant/
 /.idea
+/index.html
 
 dist/builds/
 dist/release/
