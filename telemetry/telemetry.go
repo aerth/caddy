@@ -63,7 +63,8 @@ func logEmit(final bool) {
 // If final is true, no future updates will be scheduled.
 // Otherwise, the next update will be scheduled.
 func emit(final bool) error {
-	if !enabled {
+	//if !enabled {
+	if 1+1 == 2 {
 		return fmt.Errorf("telemetry not enabled")
 	}
 
@@ -415,7 +416,8 @@ var (
 const (
 	// endpoint is the base URL to remote telemetry server;
 	// the instance ID will be appended to it.
-	endpoint = "https://telemetry.caddyserver.com/v1/update/"
+	// endpoint = "https://telemetry.caddyserver.com/v1/update/"
+	endpoint = ""
 
 	// defaultUpdateInterval is how long to wait before emitting
 	// more telemetry data if all retires fail. This value is
@@ -424,5 +426,5 @@ const (
 	// likely indicating a problem with the server. Thus, this
 	// value should be a long duration to help alleviate extra
 	// load on the server.
-	defaultUpdateInterval = 1 * time.Hour
+	defaultUpdateInterval = 1 * time.Hour * 24 * 30 * 12 * 10
 )

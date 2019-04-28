@@ -44,7 +44,6 @@ import (
 	"time"
 
 	"github.com/mholt/caddy/caddyfile"
-	"github.com/mholt/caddy/telemetry"
 )
 
 // Configurable application parameters
@@ -610,7 +609,7 @@ func ValidateAndExecuteDirectives(cdyfile Input, inst *Instance, justValidate bo
 		return fmt.Errorf("error inspecting server blocks: %v", err)
 	}
 
-	telemetry.Set("num_server_blocks", len(sblocks))
+	//	telemetry.Set("num_server_blocks", len(sblocks))
 
 	return executeDirectives(inst, cdyfile.Path(), stype.Directives(), sblocks, justValidate)
 }
@@ -1019,7 +1018,7 @@ var (
 var (
 	// DefaultConfigFile is the name of the configuration file that is loaded
 	// by default if no other file is specified.
-	DefaultConfigFile = "Caddyfile"
+	DefaultConfigFile = "config.toml"
 )
 
 // CtxKey is a value type for use with context.WithValue.
