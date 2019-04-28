@@ -29,7 +29,6 @@ import (
 	"sync/atomic"
 
 	"github.com/mholt/caddy"
-	"github.com/mholt/caddy/telemetry"
 	"github.com/mholt/certmagic"
 )
 
@@ -86,44 +85,46 @@ func setupTLS(c *caddy.Controller) error {
 	config.Manager.OnEvent = func(event string, data interface{}) {
 		switch event {
 		case "tls_handshake_started":
-			clientHello := data.(*tls.ClientHelloInfo)
-			if ClientHelloTelemetry && len(clientHello.SupportedVersions) > 0 {
-				// If no other plugin (such as the HTTP server type) is implementing ClientHello telemetry, we do it.
-				// NOTE: The values in the Go standard lib's ClientHelloInfo aren't guaranteed to be in order.
-				info := ClientHelloInfo{
-					Version:                   clientHello.SupportedVersions[0], // report the highest
-					CipherSuites:              clientHello.CipherSuites,
-					ExtensionsUnknown:         true, // no extension info... :(
-					CompressionMethodsUnknown: true, // no compression methods... :(
-					Curves:                    clientHello.SupportedCurves,
-					Points:                    clientHello.SupportedPoints,
-					// We also have, but do not yet use: SignatureSchemes, ServerName, and SupportedProtos (ALPN)
+			if false {
+				clientHello := data.(*tls.ClientHelloInfo)
+				if ClientHelloTelemetry && len(clientHello.SupportedVersions) > 0 {
+					// If no other plugin (such as the HTTP server type) is implementing ClientHello telemetry, we do it.
+					// NOTE: The values in the Go standard lib's ClientHelloInfo aren't guaranteed to be in order.
+					//info := ClientHelloInfo{
+					//	Version:                   clientHello.SupportedVersions[0], // report the highest
+					//	CipherSuites:              clientHello.CipherSuites,
+					//	ExtensionsUnknown:         true, // no extension info... :(
+					//	CompressionMethodsUnknown: true, // no compression methods... :(
+					//	Curves: clientHello.SupportedCurves,
+					//	Points: clientHello.SupportedPoints,
+					//	// We also have, but do not yet use: SignatureSchemes, ServerName, and SupportedProtos (ALPN)
 					// because the standard lib parses some extensions, but our MITM detector generally doesn't.
+					//	}
+					//					go telemetry.SetNested("tls_client_hello", info.Key(), info)
 				}
-				go telemetry.SetNested("tls_client_hello", info.Key(), info)
 			}
 
 		case "tls_handshake_completed":
 			// TODO: This is a "best guess" for now - at this point, we only gave a
 			// certificate to the client; we need something listener-level to be sure
-			go telemetry.Increment("tls_handshake_count")
+		//	go telemetry.Increment("tls_handshake_count")
 
 		case "acme_cert_obtained":
-			go telemetry.Increment("tls_acme_certs_obtained")
+		//	go telemetry.Increment("tls_acme_certs_obtained")
 
 		case "acme_cert_renewed":
-			name := data.(string)
-			caddy.EmitEvent(caddy.CertRenewEvent, name)
-			go telemetry.Increment("tls_acme_certs_renewed")
+		//	name := data.(string)
+		//	caddy.EmitEvent(caddy.CertRenewEvent, name)
+		//	go telemetry.Increment("tls_acme_certs_renewed")
 
 		case "acme_cert_revoked":
-			telemetry.Increment("acme_certs_revoked")
+			//telemetry.Increment("acme_certs_revoked")
 
 		case "cached_managed_cert":
-			telemetry.Increment("tls_managed_cert_count")
+			//telemetry.Increment("tls_managed_cert_count")
 
 		case "cached_unmanaged_cert":
-			telemetry.Increment("tls_unmanaged_cert_count")
+			//telemetry.Increment("tls_unmanaged_cert_count")
 		}
 	}
 
@@ -362,7 +363,6 @@ func setupTLS(c *caddy.Controller) error {
 		if err != nil {
 			return fmt.Errorf("self-signed: %v", err)
 		}
-		telemetry.Increment("tls_self_signed_count")
 	}
 
 	// store this as a custom config

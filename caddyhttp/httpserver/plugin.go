@@ -31,7 +31,6 @@ import (
 	"github.com/mholt/caddy/caddyfile"
 	"github.com/mholt/caddy/caddyhttp/staticfiles"
 	"github.com/mholt/caddy/caddytls"
-	"github.com/mholt/caddy/telemetry"
 	"github.com/mholt/certmagic"
 )
 
@@ -232,13 +231,13 @@ func (h *httpContext) MakeServers() ([]caddy.Server, error) {
 	// environment/system" - start by assuming that most production
 	// servers will set their default CA endpoint to a public,
 	// trusted CA (obviously not a perfect heuristic)
-	var looksLikeProductionCA bool
-	for _, publicCAEndpoint := range caddytls.KnownACMECAs {
-		if strings.Contains(certmagic.Default.CA, publicCAEndpoint) {
-			looksLikeProductionCA = true
-			break
-		}
-	}
+	//var looksLikeProductionCA bool
+	//for _, publicCAEndpoint := range caddytls.KnownACMECAs {
+	//	if strings.Contains(certmagic.Default.CA, publicCAEndpoint) {
+	//		looksLikeProductionCA = true
+	//		break
+	//	}
+	//}
 
 	// Iterate each site configuration and make sure that:
 	// 1) TLS is disabled for explicitly-HTTP sites (necessary
@@ -317,12 +316,12 @@ func (h *httpContext) MakeServers() ([]caddy.Server, error) {
 	// real-looking domains in local development. We can't easily tell
 	// which without doing a DNS lookup, so this guess is definitely naive,
 	// and if we ever want a better guess, we will have to do DNS lookups.
-	deploymentGuess := "dev"
-	if looksLikeProductionCA && atLeastOneSiteLooksLikeProduction {
-		deploymentGuess = "prod"
-	}
-	telemetry.Set("http_deployment_guess", deploymentGuess)
-	telemetry.Set("http_num_sites", len(h.siteConfigs))
+	//deploymentGuess := "dev"
+	//if looksLikeProductionCA && atLeastOneSiteLooksLikeProduction {
+	//	deploymentGuess = "prod"
+	//}
+	//telemetry.Set("http_deployment_guess", deploymentGuess)
+	//telemetry.Set("http_num_sites", len(h.siteConfigs))
 
 	return servers, nil
 }

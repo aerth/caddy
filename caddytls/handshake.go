@@ -16,12 +16,10 @@ package caddytls
 
 import (
 	"crypto/tls"
-	"fmt"
 	"log"
 	"net"
 	"strings"
 
-	"github.com/mholt/caddy/telemetry"
 	"github.com/mholt/certmagic"
 )
 
@@ -134,16 +132,17 @@ type ClientHelloInfo struct {
 // Key returns a standardized string form of the data in info,
 // useful for identifying duplicates.
 func (info ClientHelloInfo) Key() string {
-	extensions, compressionMethods := "?", "?"
-	if !info.ExtensionsUnknown {
-		extensions = fmt.Sprintf("%x", info.Extensions)
-	}
-	if !info.CompressionMethodsUnknown {
-		compressionMethods = fmt.Sprintf("%x", info.CompressionMethods)
-	}
-	return telemetry.FastHash([]byte(fmt.Sprintf("%x-%x-%s-%s-%x-%x",
-		info.Version, info.CipherSuites, extensions,
-		compressionMethods, info.Curves, info.Points)))
+	return ""
+	//extensions, compressionMethods := "?", "?"
+	//if !info.ExtensionsUnknown {
+	//	extensions = fmt.Sprintf("%x", info.Extensions)
+	//}
+	//if !info.CompressionMethodsUnknown {
+	//	compressionMethods = fmt.Sprintf("%x", info.CompressionMethods)
+	//}
+	// return telemetry.FastHash([]byte(fmt.Sprintf("%x-%x-%s-%s-%x-%x",
+	//		info.Version, info.CipherSuites, extensions,
+	//		compressionMethods, info.Curves, info.Points)))
 }
 
 // ClientHelloTelemetry determines whether to report

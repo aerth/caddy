@@ -26,7 +26,6 @@ import (
 	"sync"
 
 	"github.com/mholt/caddy/caddytls"
-	"github.com/mholt/caddy/telemetry"
 )
 
 // tlsHandler is a http.Handler that will inject a value
@@ -65,10 +64,10 @@ func (h *tlsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.listener.helloInfosMu.RUnlock()
 
 	ua := r.Header.Get("User-Agent")
-	uaHash := telemetry.FastHash([]byte(ua))
+	//uaHash := telemetry.FastHash([]byte(ua))
 
 	// report this request's UA in connection with this ClientHello
-	go telemetry.AppendUnique("tls_client_hello_ua:"+caddytls.ClientHelloInfo(info).Key(), uaHash)
+	//go telemetry.AppendUnique("tls_client_hello_ua:"+caddytls.ClientHelloInfo(info).Key(), uaHash)
 
 	var checked, mitm bool
 	if r.Header.Get("X-BlueCoat-Via") != "" || // Blue Coat (masks User-Agent header to generic values)
@@ -108,13 +107,13 @@ func (h *tlsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if checked {
 		r = r.WithContext(context.WithValue(r.Context(), MitmCtxKey, mitm))
-		if mitm {
-			go telemetry.AppendUnique("http_mitm", "likely")
-		} else {
-			go telemetry.AppendUnique("http_mitm", "unlikely")
-		}
+		//if mitm {
+		//	go telemetry.AppendUnique("http_mitm", "likely")
+		//} else {
+		//	go telemetry.AppendUnique("http_mitm", "unlikely")
+		//}
 	} else {
-		go telemetry.AppendUnique("http_mitm", "unknown")
+		// go telemetry.AppendUnique("http_mitm", "unknown")
 	}
 
 	if mitm && h.closeOnMITM {
@@ -214,9 +213,10 @@ func (c *clientHelloConn) Read(b []byte) (n int, err error) {
 	c.listener.helloInfosMu.Unlock()
 
 	// report this ClientHello to telemetry
-	chKey := caddytls.ClientHelloInfo(rawParsed).Key()
-	go telemetry.SetNested("tls_client_hello", chKey, rawParsed)
-	go telemetry.AppendUnique("tls_client_hello_count", chKey)
+	// chKey := caddytls.ClientHelloInfo(rawParsed).Key()
+
+	// go telemetry.SetNested("tls_client_hello", chKey, rawParsed)
+	// go telemetry.AppendUnique("tls_client_hello_count", chKey)
 
 	c.readHello = true
 	return
