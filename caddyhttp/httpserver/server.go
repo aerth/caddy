@@ -513,7 +513,6 @@ func (s *Server) OnStartupComplete() {
 			scheme = "HTTPS"
 		}
 
-		fmt.Println("")
 		fmt.Printf("Serving %s on port "+firstSite.Port()+" \n", scheme)
 		s.outputSiteInfo(false)
 		fmt.Println("")

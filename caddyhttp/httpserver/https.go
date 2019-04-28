@@ -15,7 +15,6 @@
 package httpserver
 
 import (
-	"fmt"
 	"net"
 	"net/http"
 
@@ -26,10 +25,6 @@ import (
 
 func activateHTTPS(cctx caddy.Context) error {
 	operatorPresent := !caddy.Started()
-
-	if !caddy.Quiet && operatorPresent {
-		fmt.Print("Activating privacy features... ")
-	}
 
 	ctx := cctx.(*httpContext)
 
@@ -76,11 +71,6 @@ func activateHTTPS(cctx caddy.Context) error {
 			}
 		}
 	}
-
-	if !caddy.Quiet && operatorPresent {
-		fmt.Println("done.")
-	}
-
 	return nil
 }
 
