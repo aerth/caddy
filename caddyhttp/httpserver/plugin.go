@@ -691,7 +691,7 @@ const (
 	// DefaultHost is the default host.
 	DefaultHost = ""
 	// DefaultPort is the default port.
-	DefaultPort = "2015"
+	DefaultPort = "8080"
 	// DefaultRoot is the default root folder.
 	DefaultRoot = "."
 	// DefaultHTTPPort is the default port for HTTP.
