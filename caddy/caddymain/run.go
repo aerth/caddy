@@ -73,7 +73,7 @@ func init() {
 // Run is Caddy's main() function.
 func Run() {
 	flag.Parse()
-
+	fmt.Println("C A D D Y L I T E")
 	module := getBuildModule()
 	cleanModVersion := strings.TrimPrefix(module.Version, "v")
 
@@ -174,6 +174,10 @@ func Run() {
 		log.Printf("[INFO] %s", msg)
 		os.Exit(0)
 	}
+
+	fmt.Println("##################")
+	fmt.Println(string(caddyfileinput.Body()))
+	fmt.Println("##################")
 
 	// Start your engines
 	instance, err := caddy.Start(caddyfileinput)
